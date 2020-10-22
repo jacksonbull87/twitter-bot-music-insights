@@ -58,7 +58,7 @@ def add_popularity_before_after(before_date, current_date, dataframe):
     
     
     current_artist_popularity_list = []
-    for artist_id in parsed_data['artist ids']:
+    for artist_id in dataframe['artist ids']:
         current_popularity_data = get_fan_metrics(api_token, artist_id[0], 'spotify', current_date, current_date, field='popularity')
         if current_popularity_data['popularity']:
             current_artist_popularity_list.append(current_popularity_data['popularity'][0]['value'])
