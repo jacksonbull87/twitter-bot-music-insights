@@ -2,6 +2,9 @@
 import requests
 import re
 import pandas as pd
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
+
 
 
 def get_api_token(REFRESH_TOKEN):
@@ -169,17 +172,26 @@ def get_artist_id(api_token, q, search_type):
 
 def get_fan_metrics(api_token, cm_artist_id, source, since_date, until_date, field=None):
     #returns a list of dictionaries, each item being a different timestamp
-    response = requests.get(url='https://api.chartmetric.com/api/artist/{}/stat/{}'.format(cm_artist_id, source),
+    retry_strategy = Retry(
+    total=3,
+    backoff_factor=1,
+    status_forcelist=[429, 500, 502, 503, 504],
+    method_whitelist=["HEAD", "GET", "OPTIONS"], 
+)
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    http = requests.Session()
+    http.mount("https://", adapter)
+    http.mount("http://", adapter)
+    response = http.get(url='https://api.chartmetric.com/api/artist/{}/stat/{}'.format(cm_artist_id, source),
                             headers={'Authorization' : 'Bearer {}'.format(api_token)}, params={'since': since_date, 'field': field, 'until':until_date}
                                 )
     if response.status_code == 200:
         data = response.json()
-        try:
-            chart = data['obj']
-            return chart
+
+        chart = data['obj']
+        return chart
             
-        except TypeError:
-            return "None"
+            
     else:
         print("Artist ID: ", cm_artist_id)
         print(response.status_code)
