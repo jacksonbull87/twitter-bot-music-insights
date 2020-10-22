@@ -30,5 +30,5 @@ hashartist = artist.replace(" ", "",)
 #instantiatiate twitter bot object
 bot = instantiate_twitter_bot()
 
-bot.update_status("One Year Ago on {}: \nThe #1 song was '{}' by #{}\n@spotify #top200 #throwbackthursday Powered by @Chartmetric code: https://bit.ly/3dN4UvG ".format(date, title, hashartist))
+bot.update_status("One Year Ago on {}: \nThe #1 song was '{}' by #{}\n@spotify #top200 #throwbackthursday Powered by @Chartmetric".format(date, title, hashartist))
 

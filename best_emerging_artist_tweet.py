@@ -35,5 +35,5 @@ spot_url = get_spotify_url(api_token, artist_id)
 #instantiatiate twitter bot object
 bot = instantiate_twitter_bot()
 
-bot.update_status("This week the artist known as #{} gained the biggest increase in @spotify popularity with their song '{}'\nTheir popularity increased by {}% in just 7 days\n#dataanalysis #musicdiscovery powered by @Chartmetric code: https://bit.ly/3dN4UvG\n{}".format(hashartist, title, round(pop_change/before_pop *100, 2), spot_url))
+bot.update_status("This week the artist known as #{} gained the biggest increase in @spotify popularity with their song '{}'\nTheir popularity increased by {}% in just 7 days\n#dataanalysis #musicdiscovery powered by @Chartmetric\n{}".format(hashartist, title, round(pop_change/before_pop *100, 2), spot_url))
 
