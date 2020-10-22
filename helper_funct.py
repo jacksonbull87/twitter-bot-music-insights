@@ -2,6 +2,7 @@ import datetime
 import pandas as pd
 from cm_api import get_fan_metrics, get_api_token
 from cm_config import config
+import time
 
 rt = config['refresh_token']
 api_token = get_api_token(rt)
@@ -53,6 +54,7 @@ def add_popularity_before_after(before_date, current_date, dataframe):
             before_popularity.append(popularity_data['popularity'][0]['value'])
         else:
             before_popularity.append('NaN')
+        time.sleep(4)
 
     dataframe['before popularity'] = pd.Series(before_popularity) 
     
@@ -64,6 +66,7 @@ def add_popularity_before_after(before_date, current_date, dataframe):
             current_artist_popularity_list.append(current_popularity_data['popularity'][0]['value'])
         else:
             current_artist_popularity_list.append('NaN')
+        time.sleep(4)
 
     dataframe['current_artist_popularity'] = pd.Series(current_artist_popularity_list)
     
