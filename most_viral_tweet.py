@@ -31,4 +31,4 @@ spot_url = get_spotify_url(api_token, artist_id)
 #instantiatiate twitter bot object
 bot = twitter_bot()
 
-bot.update_status("'{}' by #{} has a velocity metric of {},\nmaking it the most viral song this week on #tiktok #dataanalytics @chartmetric #musicstreaming #viral\n{}".format(title, hashartist, round(velocity, 2), spot_url))
+bot.update_status("'{}' by #{} has a velocity metric of {},\nmaking it the most viral song this week on #tiktok #dataanalytics Powered by @Chartmetric code: https://bit.ly/3dN4UvG\n{}".format(title, hashartist, round(velocity, 2), spot_url))
