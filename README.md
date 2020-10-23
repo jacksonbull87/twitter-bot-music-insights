@@ -8,6 +8,7 @@ Follow me [@jacksonabull](https://twitter.com/jacksonabull) to see the latest
 
 ## KPIs
 **Velocity**: Average Change in Rank over 7-day Period
+
 **Spotify Popularity**: The value will be between 0 and 100, with 100 being the most popular. The artist’s popularity is calculated from the popularity of all the artist’s tracks.
 
 ## Post Schedule
