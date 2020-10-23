@@ -45,8 +45,9 @@ def parse_top200_popularity(data):
     return df
 
 
-def add_popularity_before_after(before_date, current_date, dataframe):
+def add_popularity_before_after(api_token, before_date, current_date, dataframe):
     #return dataframe with before, after, and change in popularity for primary artist
+    counter = 0
     before_popularity = []
     for artist_id in dataframe['artist ids']:
         popularity_data = get_fan_metrics(api_token, artist_id[0], 'spotify', before_date,before_date, field='popularity')
@@ -54,6 +55,9 @@ def add_popularity_before_after(before_date, current_date, dataframe):
             before_popularity.append(popularity_data['popularity'][0]['value'])
         else:
             before_popularity.append('NaN')
+        counter+=1
+        print(counter)
+
         time.sleep(4)
 
     dataframe['before popularity'] = pd.Series(before_popularity) 
@@ -66,6 +70,8 @@ def add_popularity_before_after(before_date, current_date, dataframe):
             current_artist_popularity_list.append(current_popularity_data['popularity'][0]['value'])
         else:
             current_artist_popularity_list.append('NaN')
+        counter+=1
+        print(counter)
         time.sleep(4)
 
     dataframe['current_artist_popularity'] = pd.Series(current_artist_popularity_list)

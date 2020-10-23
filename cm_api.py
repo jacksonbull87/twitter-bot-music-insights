@@ -175,7 +175,7 @@ def get_fan_metrics(api_token, cm_artist_id, source, since_date, until_date, fie
     retry_strategy = Retry(
     total=3,
     backoff_factor=1,
-    status_forcelist=[429, 500, 502, 503, 504],
+    status_forcelist=[ 500, 502, 503, 504],
     method_whitelist=["HEAD", "GET", "OPTIONS"], 
 )
     adapter = HTTPAdapter(max_retries=retry_strategy)
