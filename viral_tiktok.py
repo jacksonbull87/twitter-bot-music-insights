@@ -29,6 +29,6 @@ artist_id = get_track_metadata(api_token, cm_id)['artists'][0]['id']
 spot_url = get_spotify_url(api_token, artist_id)
 
 #instantiatiate twitter bot object
-bot = twitter_bot()
+bot = instantiate_twitter_bot()
 
 bot.update_status("'{}' by #{} has a velocity metric of {},\nmaking it the most viral song this week on #tiktok #dataanalytics Powered by @Chartmetric\n{}".format(title, hashartist, round(velocity, 2), spot_url))
