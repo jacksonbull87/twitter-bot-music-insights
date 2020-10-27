@@ -12,6 +12,7 @@ api_token = get_api_token(rt)
 ################################################
 
 #generate today's date to make api call with
+
 date = generate_today_date()
 
 #collects title, artist, velocity, and artist id for most viral shazam track
