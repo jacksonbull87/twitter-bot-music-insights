@@ -1,6 +1,3 @@
-
-
-
 import json
 import logging
 from cm_config import  config

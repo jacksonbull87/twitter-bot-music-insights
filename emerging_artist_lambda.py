@@ -16,7 +16,7 @@ def tweet(event, context):
     api_token = get_api_token(rt)
     ################################################
 
-    current_date = generate_today_date()
+    current_date = generate_yesterday_date()
 
     before_date = generate_one_week_prior_date()
 
