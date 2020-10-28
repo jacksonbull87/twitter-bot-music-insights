@@ -12,6 +12,10 @@ def generate_date_one_year_ago():
     return str(date.date())
 
 def generate_today_date():
+    date = datetime.datetime.now()- datetime.timedelta(days=0)
+    return str(date.date())
+
+def generate_yesterday_date():
     date = datetime.datetime.now()- datetime.timedelta(days=1)
     return str(date.date())
 
