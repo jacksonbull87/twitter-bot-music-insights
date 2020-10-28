@@ -1,6 +1,4 @@
 #this program gerates a post that contains the song with the highest velocity for the past 7-days on tiktok...most viral track
-
-import tweepy
 from cm_config import  config
 from cm_api import *
 from helper_funct import *
