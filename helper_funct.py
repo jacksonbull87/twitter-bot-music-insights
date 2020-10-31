@@ -27,6 +27,16 @@ def generate_one_week_prior_date():
 def parse_data(data):
     return data[0]['name'].title(), data[0]['artist_names'][0]
 
+def parse_tiktok_data(data):
+    data_bucket = []
+    for track in data:
+        track_tuple = (track['name'], track['tiktok_artist_names'][0], track['isrc'], track['velocity'], track['cm_track'])
+        data_bucket.append(track_tuple)
+
+    df = pd.DataFrame(data_bucket, columns=['title', 'artist', 'isrc', 'velocity', 'cm_id'])
+    df.dropna(subset=['isrc'], inplace=True)
+    return df
+
 def parse_viral(data):
     data_bucket = []
     for track in data:
@@ -89,3 +99,32 @@ def get_most_successful_artist(dataframe):
     #returns title, artist, before popularity, current popularity, popularity change
     df3 = dataframe.sort_values('popularity change', ascending=False).reset_index()
     return df3['title'][0], df3['artists'][0][0], df3['artist ids'][0][0], df3['before popularity'][0],  df3['current_artist_popularity'][0], df3['popularity change'][0]
+
+def get_most_social_gain(dataframe):
+    #returns title, artist, before popularity, current popularity, popularity change
+    df3 = dataframe.sort_values('follower_diff', ascending=False).reset_index()
+    return df3['title'][0], df3['artists'][0][0], df3['artist ids'][0][0], df3['before'][0] ,df3['follower_diff'][0]
+
+def get_most_listener_gain(dataframe):
+    #returns title, artist, before popularity, current popularity, popularity change
+    df3 = dataframe.sort_values('listener_diff', ascending=False).reset_index()
+    return df3['title'][0], df3['artist'][0], df3['cm_artist_id'][0], df3['before'][0] ,df3['listener_diff'][0]
+
+#this functions takes in a dataframe and a platform for which to collect data on the difference in followers between two dates
+#platform values are   `instagram`, `twitter`
+def get_follower_differnce(api_token, dataframe, platform, start_date, end_date):
+    ig_bucket = []
+    for artist in dataframe['artist ids']:
+        followers = get_fan_metrics(api_token, artist[0], platform, start_date, end_date, field='followers')['followers']
+        if len(followers) > 0:
+            follow_tuple = (followers[0]['value'], followers[-1]['value'])
+            ig_bucket.append(follow_tuple)
+        else:
+            follow_tuple = (None, None)
+            ig_bucket.append(follow_tuple)
+
+    df = pd.DataFrame(ig_bucket, columns=['before', 'after'])
+
+    joined_data = dataframe.join(df)
+    joined_data['follower_diff']  = joined_data['after'] - joined_data['before']
+    return joined_data

@@ -132,6 +132,21 @@ def get_spotify_url(api_token, cm_artist_id):
         print(response.status_code)
         print(response.text)
 
+def get_instagram_url(api_token, cm_artist_id):
+    
+    response = requests.get(url='https://api.chartmetric.com/api/artist/{}/urls'.format(cm_artist_id),
+                            headers={'Authorization' : 'Bearer {}'.format(api_token)})
+    if response.status_code == 200:
+
+        data = response.json()['obj']
+        for social in data:
+            if social['domain'] == 'instagram':
+                return social['url'][0]
+    else:
+        
+        print(response.status_code)
+        print(response.text)
+
 
 def get_track_playlist(api_token, cm_id, platform, status, since, limit):
     response = requests.get(url='https://api.chartmetric.com/api/track/{}/{}/{}/playlists'.format(cm_id, platform, status),
@@ -150,7 +165,8 @@ def get_track_playlist(api_token, cm_id, platform, status, since, limit):
 def get_artist_id(api_token, q, search_type):
     #return tuple (artist name, artist cm id)
     response = requests.get(url='https://api.chartmetric.com/api/search',
-                            headers={'Authorization' : 'Bearer {}'.format(api_token)}, params={'q': q, 'type': search_type}
+                            headers={'Authorization' : 'Bearer {}'.format(api_token)}, params={'q': q, 'type': search_type,
+                            'limit':50}
                                 )
     if response.status_code == 200:
         data = response.json()
@@ -183,7 +199,8 @@ def get_fan_metrics(api_token, cm_artist_id, source, since_date, until_date, fie
     http.mount("https://", adapter)
     http.mount("http://", adapter)
     response = http.get(url='https://api.chartmetric.com/api/artist/{}/stat/{}'.format(cm_artist_id, source),
-                            headers={'Authorization' : 'Bearer {}'.format(api_token)}, params={'since': since_date, 'field': field, 'until':until_date}
+                            headers={'Authorization' : 'Bearer {}'.format(api_token)}, params={'since': since_date, 'field': field, 
+                            'interpolated':True,'until':until_date}
                                 )
     if response.status_code == 200:
         data = response.json()
