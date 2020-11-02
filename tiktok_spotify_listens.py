@@ -32,6 +32,9 @@ parsed_data['cm_artist_id'] = id_bucket
 
 # #drop rows with no ID
 parsed_data2 = parsed_data.dropna(subset=['cm_artist_id'])
+parsed_data2.reset_index(inplace=True)
+parsed_data2 = parsed_data2[~parsed_data2['cm_artist_id'].isin( ['None'])].reset_index()
+
 # # #collect before and after listener values for each artist
 listener_bucket = []
 for artist in parsed_data2['cm_artist_id']:
@@ -39,11 +42,9 @@ for artist in parsed_data2['cm_artist_id']:
     if len(listeners) > 0:
         follow_tuple = (listeners[0]['value'], listeners[-1]['value'])
         listener_bucket.append(follow_tuple)
-        time.sleep(float(decimal.Decimal(random.randrange(100, 200))/100))
     else:
         follow_tuple = (None, None)
         listener_bucket.append(follow_tuple)
-        time.sleep(1)
 
 complete_data = parsed_data2.join(pd.DataFrame(listener_bucket, columns=['before', 'after']))
 complete_data['listener_diff'] = complete_data['after'] - complete_data['before']
