@@ -16,7 +16,19 @@ Follow me [@jacksonabull](https://twitter.com/jacksonabull) to see the latest
 Posts song with the highest velocity  from this week's top 100 trending Tiktok tracks
 ### Tuesday `viral_shazam.py`
 Posts song with the highest velocity  from this week's top 100 trending Shazam tracks
+### Wednesday `tiktok_spot_growth(monthly).py`
+**Description:** Identifies which trending-artist on TikTok experienced the biggest monthly gain in Spotify listeners
+**How It Works:**
+1. Collects data for the top 100 trending tracks on Tiktok for each week over the past month
+2. Drops any track without an isrc code in order to filter out any audio that's not an actually song (i.e. some random user-generated audio)
+3. Drop all duplicate artists except for the first occurrence 
+4. Using the ID for each artist, I fetch historical values for Spotify listeners and extract the first and last values to create a tuple.
+5. Feature engineer a new `listener difference` column calculated by subtracting the first tuple item from the second tuple item
+6. Sort DataFrame by `listener difference` in descending order
+7. Grab relevant data from first row to include in Tweet message
 ### Thursday `num1song_tweet.py`
 A throwback Thursday themed post for the number 1 song a year ago on the Spotify Top 200 Chart
-### Friday `tiktok_spotify_listens.py`
-Out of all the artists on this week's Top 100 TikTok chart, this script calculates which artist had the biggest gain in Spotify listeners over a 7-day period.
+### Friday `tiktok_spot_growth(weekly).py`
+**Description:** Similar to Wednesday's monthly post, this bot focuses on the artist with the biggest *weekly* boost in Spotify listeners
+**How It Works:** *Same process as Wednesday except dont for one weekly chart*
+
