@@ -7,6 +7,10 @@ import time
 rt = config['refresh_token']
 api_token = get_api_token(rt)
 
+def get_date_range(start_date, end_date, frequency):
+    
+    return [str(x)[:10] for x in list(pd.date_range(start=start_date,end=end_date, freq=frequency))]
+
 def generate_date_one_year_ago():
     date = datetime.datetime.now() - datetime.timedelta(days=365)
     return str(date.date())
