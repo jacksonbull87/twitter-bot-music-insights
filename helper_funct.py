@@ -23,6 +23,10 @@ def generate_one_week_prior_date():
     date = datetime.datetime.now()- datetime.timedelta(days=7)
     return str(date.date())
 
+def generate_one_month_ago():
+    date = datetime.datetime.now()- datetime.timedelta(days=30)
+    return str(date.date())
+
 
 def parse_data(data):
     return data[0]['name'].title(), data[0]['artist_names'][0]
