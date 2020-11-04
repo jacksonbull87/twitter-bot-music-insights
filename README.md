@@ -18,6 +18,7 @@ Posts song with the highest velocity  from this week's top 100 trending Tiktok t
 Posts song with the highest velocity  from this week's top 100 trending Shazam tracks
 ### Wednesday `tiktok_spot_growth(monthly).py`
 **Description:** Identifies which trending-artist on TikTok experienced the biggest monthly gain in Spotify listeners
+
 **How It Works:**
 1. Collects data for the top 100 trending tracks on Tiktok for each week over the past month
 2. Drops any track without an isrc code in order to filter out any audio that's not an actually song (i.e. some random user-generated audio)
@@ -30,5 +31,6 @@ Posts song with the highest velocity  from this week's top 100 trending Shazam t
 A throwback Thursday themed post for the number 1 song a year ago on the Spotify Top 200 Chart
 ### Friday `tiktok_spot_growth(weekly).py`
 **Description:** Similar to Wednesday's monthly post, this bot focuses on the artist with the biggest *weekly* boost in Spotify listeners
+
 **How It Works:** *Same process as Wednesday except dont for one weekly chart*
 
