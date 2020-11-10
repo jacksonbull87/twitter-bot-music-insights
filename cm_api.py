@@ -245,13 +245,14 @@ def get_shazam_most_viral_track(api_token,date, country_code='US'):
         for track in tracks:
             if type(track['artist_names']) == type(list):
 
-                track_tuple = (track['name'], track['artist_names'][0],track['velocity'], track['cm_artist'][0])
+                track_tuple = (track['name'], track['artist_names'][0],track['velocity'], track['cm_artist'][0], track['isrc'])
                 data_bucket.append(track_tuple)
             else:
-                track_tuple = (track['name'], track['artist_names'],track['velocity'], track['cm_artist'])
+                track_tuple = (track['name'], track['artist_names'],track['velocity'], track['cm_artist'], track['isrc'])
                 data_bucket.append(track_tuple)        
 
-        df = pd.DataFrame(data_bucket, columns=['title', 'artist','velocity', 'artist id'])
+        df = pd.DataFrame(data_bucket, columns=['title', 'artist','velocity', 'artist id', 'isrc'])
+        df.dropna(subset=['isrc'], inplace=True)
         df.sort_values('velocity', ascending=False, inplace=True)
         df1 = df.reset_index()
         return df1['title'][0], df1['artist'][0][0], df1['velocity'][0], df1['artist id'][0][0]
