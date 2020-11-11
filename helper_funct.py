@@ -136,3 +136,10 @@ def get_follower_differnce(api_token, dataframe, platform, start_date, end_date)
     joined_data = dataframe.join(df)
     joined_data['follower_diff']  = joined_data['after'] - joined_data['before']
     return joined_data
+
+
+def count_wiki_views(list_of_dict)
+    counter = 0
+    for item in views:
+        counter += item['value']
+    return counter
