@@ -145,4 +145,4 @@ def count_wiki_views(list_of_dict):
     return counter
 
 def get_topwiki_artist(dataframe):
-    return dataframe['title'][0], dataframe['artist'][0],dataframe['cm_artist_id'], dataframe['wiki views'] 
+    return dataframe['title'][0], dataframe['artist'][0],dataframe['cm_artist_id'][0], dataframe['wiki views'][0]
