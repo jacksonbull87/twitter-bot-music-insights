@@ -138,8 +138,11 @@ def get_follower_differnce(api_token, dataframe, platform, start_date, end_date)
     return joined_data
 
 
-def count_wiki_views(list_of_dict)
+def count_wiki_views(list_of_dict):
     counter = 0
     for item in list_of_dict:
         counter += item['value']
     return counter
+
+def get_topwiki_artist(dataframe):
+    return dataframe['title'][0], dataframe['artist'][0],dataframe['cm_artist_id'], dataframe['wiki views'] 
