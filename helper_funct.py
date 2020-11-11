@@ -140,6 +140,6 @@ def get_follower_differnce(api_token, dataframe, platform, start_date, end_date)
 
 def count_wiki_views(list_of_dict)
     counter = 0
-    for item in views:
+    for item in list_of_dict:
         counter += item['value']
     return counter
