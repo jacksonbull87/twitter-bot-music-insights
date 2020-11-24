@@ -146,3 +146,8 @@ def count_wiki_views(list_of_dict):
 
 def get_topwiki_artist(dataframe):
     return dataframe['title'][0], dataframe['artist'][0],dataframe['cm_artist_id'][0], dataframe['wiki views'][0]
+
+
+#retreive title, artist, velocity
+def most_viral_tiktoktrack(dataframe):
+    return dataframe['title'][0], dataframe['artist'][0], dataframe['velocity'][0]
