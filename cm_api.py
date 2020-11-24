@@ -132,6 +132,19 @@ def get_spotify_url(api_token, cm_artist_id):
         print(response.status_code)
         print(response.text)
 
+#get top spotify monthly cities
+def monthly_listen(api_token, cm_artist_id, since_date):
+    response = requests.get(url='https://api.chartmetric.com/api/artist/{}/where-people-listen'.format(cm_artist_id),
+                           headers={'Authorization' : 'Bearer {}'.format(api_token)},
+                           params={'since':since_date})
+    
+    if response.status_code == 200:
+        return response.json()['obj']
+    else:
+        print(response.status_code)
+        print(response.text)
+    
+
 def get_instagram_url(api_token, cm_artist_id):
     
     response = requests.get(url='https://api.chartmetric.com/api/artist/{}/urls'.format(cm_artist_id),
