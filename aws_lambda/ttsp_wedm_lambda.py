@@ -36,7 +36,7 @@ def tweet(event, context):
     df.dropna(subset=['isrc'], inplace=True)
 
     #drop duplicate artists except for first occurence
-    df.drop_duplicates(subset=['artist'], keep='first', inplace=True)
+    df.drop_duplicates(subset=['artist'], keep='last', inplace=True)
 
     #get artist id for each artist
     id_bucket = []

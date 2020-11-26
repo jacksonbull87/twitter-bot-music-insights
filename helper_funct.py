@@ -150,4 +150,22 @@ def get_topwiki_artist(dataframe):
 
 #retreive title, artist, velocity
 def most_viral_tiktoktrack(dataframe):
-    return dataframe['title'][0], dataframe['artist'][0], dataframe['velocity'][0], dataframe['cm_artist_id'][0]
+    return dataframe['add date'][0], dataframe['title'][0], dataframe['artist'][0], dataframe['velocity'][0], dataframe['cm_artist_id'][0]
+
+#get top spotify monthly cities
+def monthly_listen(api_token, cm_artist_id, since_date):
+    response = requests.get(url='https://api.chartmetric.com/api/artist/{}/where-people-listen'.format(cm_artist_id),
+                           headers={'Authorization' : 'Bearer {}'.format(api_token)},
+                           params={'since':since_date})
+    
+    if response.status_code == 200:
+        return response.json()['obj']
+    else:
+        print(response.status_code)
+        print(response.text)
+
+
+def top_5_cities(data_object):
+    city_list = list(data_object.keys())
+    return city_list[0],city_list[1],city_list[2],city_list[3], city_list[4]
+

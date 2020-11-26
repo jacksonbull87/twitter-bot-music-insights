@@ -114,4 +114,5 @@ def tweet(event, context):
 
     logger.info(message)
 
-    return response
+    return responses
+    

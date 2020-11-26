@@ -29,7 +29,7 @@ df = pd.DataFrame(data_bucket, columns=['title', 'artist', 'isrc', 'velocity', '
 df.dropna(subset=['isrc'], inplace=True)
 
 #drop duplicate artists except for first occurence
-df.drop_duplicates(subset=['artist'], keep='first', inplace=True)
+df.drop_duplicates(subset=['artist'], keep='last', inplace=True)
 
 #get artist id for each artist
 id_bucket = []
