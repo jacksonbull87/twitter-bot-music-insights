@@ -38,8 +38,10 @@ Follow me [@jacksonabull](https://twitter.com/jacksonabull) to see the latest
 
 **Insights Description:** A fun, throwback-thursday post to reminisce the #1 song on Spotify's Top 200 a year ago.
 
-### Friday `tiktok_spot_growth(weekly).py`
-**Description:** Similar to Wednesday's monthly post, this bot focuses on the artist with the biggest *weekly* boost in Spotify listeners
+### `bot5.py`
+**Schedule:** *Friday @ 12:00 UTC, Weekly*
+
+**Insights Description:** Similar to Wednesday's monthly post, this bot focuses on the artist with the biggest *weekly* boost in Spotify listeners
 
 **How It Works:** *Same process as Wednesday except dont for one weekly chart*
 

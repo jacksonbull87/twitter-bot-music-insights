@@ -1,3 +1,7 @@
+#This bot collects data on top 100 trending tracks on Tiktok
+#for the current week. Then it finds the artist with the 
+#biggest weekly gain in Spotify daily listeners.
+
 import tweepy
 from cm_config import  config
 from cm_api import *
