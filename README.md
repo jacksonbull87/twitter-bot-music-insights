@@ -28,13 +28,16 @@ Follow me [@jacksonabull](https://twitter.com/jacksonabull) to see the latest
 **How It Works:**
 1. Collects data for the top 100 trending tracks on Tiktok for each week over the past month
 2. Drops any track without an isrc code in order to filter out any audio that's not an actually song (i.e. some random user-generated audio)
-3. Drop all duplicate artists except for the first occurrence 
+3. Drop all duplicate artists except for the last occurrence 
 4. Using the ID for each artist, I fetch historical values for Spotify listeners and extract the first and last values to create a tuple.
 5. Feature engineer a new `listener difference` column calculated by subtracting the first tuple item from the second tuple item
 6. Sort DataFrame by `listener difference` in descending order
 7. Grab relevant data from first row to include in Tweet message
-### Thursday `num1song_tweet.py`
-A throwback Thursday themed post for the number 1 song a year ago on the Spotify Top 200 Chart
+### `bot4.py`
+**Schedule:** *Thursday @ 14:00 UTC, Weekly*
+
+**Insights Description:** A fun, throwback-thursday post to reminisce the #1 song on Spotify's Top 200 a year ago.
+
 ### Friday `tiktok_spot_growth(weekly).py`
 **Description:** Similar to Wednesday's monthly post, this bot focuses on the artist with the biggest *weekly* boost in Spotify listeners
 
