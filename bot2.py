@@ -1,3 +1,6 @@
+#This bot collects data on the top 100 trending tracks of 
+#the week and finds the record with the highest velocity (most viral track)
+
 import tweepy
 from cm_config import  config
 from cm_api import *

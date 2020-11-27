@@ -15,8 +15,9 @@ Follow me [@jacksonabull](https://twitter.com/jacksonabull) to see the latest
 ### `bot1.py`
 Schedule: Monday @ 13:30 UTC, Weekly
 Insights Description: This bot collects data on the top 100 trending tracks of the week and finds the record with the highest velocity (most viral track)
-### Tuesday `viral_shazam.py`
-Posts song with the highest velocity  from this week's top 100 trending Shazam tracks
+### `bot2.py`
+Schedule: Tuesday @ 17:00 UTC, Weekly
+Insights Description: This bot collects data on the top 100 trending tracks of the week and finds the record with the highest velocity (most viral track)
 ### Wednesday `tiktok_spot_growth(monthly).py`
 **Description:** Identifies which trending-artist on TikTok experienced the biggest monthly gain in Spotify listeners
 
