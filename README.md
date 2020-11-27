@@ -13,7 +13,6 @@ Follow me [@jacksonabull](https://twitter.com/jacksonabull) to see the latest
 
 ## Bot Information
 ### `bot1.py`
-####
 **Schedule:** *Monday @ 13:30 UTC, Weekly*
 
 **Insights Description:** This bot collects data on the top 100 trending tracks of the week on Tiktok and finds the record with the highest velocity (most viral track)
@@ -44,5 +43,5 @@ Follow me [@jacksonabull](https://twitter.com/jacksonabull) to see the latest
 
 **Insights Description:** Similar to Wednesday's monthly post, this bot focuses on the artist with the biggest *weekly* boost in Spotify listeners
 
-**How It Works:** *Same process as Wednesday except dont for one weekly chart*
+**How It Works:** *Same process as Wednesday except within a scope of 1 week*
 
