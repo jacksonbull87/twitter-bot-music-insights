@@ -11,9 +11,9 @@ Follow me [@jacksonabull](https://twitter.com/jacksonabull) to see the latest
 
 **Spotify Popularity**: The value will be between 0 and 100, with 100 being the most popular. The artist’s popularity is calculated from the popularity of all the artist’s tracks.
 
-## Post Schedule
-### Monday `viral_tiktok.py`
-Posts song with the highest velocity  from this week's top 100 trending Tiktok tracks
+## Bot Information
+### `bot1.py`
+Insights Desciption: This bot collects data on the top 100 trending tracks of the week and finds the record with the highest velocity (most viral track)
 ### Tuesday `viral_shazam.py`
 Posts song with the highest velocity  from this week's top 100 trending Shazam tracks
 ### Wednesday `tiktok_spot_growth(monthly).py`
