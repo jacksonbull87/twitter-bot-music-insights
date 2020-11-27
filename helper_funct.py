@@ -3,6 +3,7 @@ import pandas as pd
 from cm_api import get_fan_metrics, get_api_token
 from cm_config import config
 import time
+import requests
 
 rt = config['refresh_token']
 api_token = get_api_token(rt)

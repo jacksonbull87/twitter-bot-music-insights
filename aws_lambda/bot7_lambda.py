@@ -86,13 +86,13 @@ def tweet(event, context):
     spot_url = get_spotify_url(api_token, cm_artist_id)
 
     #get top cities for artist
-    data_object = monthly_listen(api_token, cm_artist_id, add_date)
+    data_object = monthly_listen(api_token, cm_artist_id, str(add_date)[:10])
 
     #save top five cities as variables
     first, second, third, fourth, fifth = top_5_cities(data_object)
 
     #create message
-    message = "Most Viral Tiktik Song of the Month: #{} by #{}\nVelocity = {} on {}\nTop 5 Cities by Spotify Monthly Listeners\n1. {}\n2. {}\n3. {}\n4. {}\n5. {}\n{}".format(hashtitle,hashartist,round(velocity, 2),add_date,first,second, third, fourth, fifth,spot_url)
+    message = "Most Viral Tiktik Song of the Month: #{} by #{}\nVelocity = {} on {}\nTop 5 Cities by Spotify Monthly Listeners\n1. {}\n2. {}\n3. {}\n4. {}\n5. {}\n{}".format(hashtitle,hashartist,round(velocity, 2),str(add_date)[:10],first,second, third, fourth, fifth,spot_url)
 
     #instantiate twitter bot
     bot = instantiate_twitter_bot()
