@@ -13,13 +13,17 @@ Follow me [@jacksonabull](https://twitter.com/jacksonabull) to see the latest
 
 ## Bot Information
 ### `bot1.py`
-Schedule: Monday @ 13:30 UTC, Weekly
-Insights Description: This bot collects data on the top 100 trending tracks of the week and finds the record with the highest velocity (most viral track)
+**Schedule:** *Monday @ 13:30 UTC, Weekly*
+
+**Insights Description:** This bot collects data on the top 100 trending tracks of the week and finds the record with the highest velocity (most viral track)
 ### `bot2.py`
-Schedule: Tuesday @ 17:00 UTC, Weekly
-Insights Description: This bot collects data on the top 100 trending tracks of the week and finds the record with the highest velocity (most viral track)
-### Wednesday `tiktok_spot_growth(monthly).py`
-**Description:** Identifies which trending-artist on TikTok experienced the biggest monthly gain in Spotify listeners
+**Schedule:** *Tuesday @ 17:00 UTC, Weekly*
+
+**Insights Description:** This bot collects data on the top 100 trending tracks of the week and finds the record with the highest velocity (most viral track)
+### `bot3.py`
+**Schedule:** *Wednesday (first) @ 12:00 UTC, Monthly*
+
+**Insights Description:** This bot collects data on the top trending tracks on Tiktok from the previous 4 weeks. For each unique artists, the bot will collect daily listener counts for the current day *and* the date 7-days earlier. Based on the difference between those two values, the bot will output metadata for the artist with the biggest gain in listeners.
 
 **How It Works:**
 1. Collects data for the top 100 trending tracks on Tiktok for each week over the past month

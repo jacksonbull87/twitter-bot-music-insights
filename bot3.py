@@ -1,3 +1,10 @@
+#This bot collects data on the top trending tracks
+#on Tiktok from the previous 4 weeks. For each unique artists,
+#the bot will collect daily listener counts for the current day
+#and the date 7-days earlier. Based on the difference between
+#those two value, the bot will output metadata for the
+#artist with the biggest gain in listeners
+
 import tweepy
 from cm_config import  config
 from cm_api import *
