@@ -15,11 +15,11 @@ Follow me [@jacksonabull](https://twitter.com/jacksonabull) to see the latest
 ### `bot1.py`
 **Schedule:** *Monday @ 13:30 UTC, Weekly*
 
-**Insights Description:** This bot collects data on the top 100 trending tracks of the week and finds the record with the highest velocity (most viral track)
+**Insights Description:** This bot collects data on the top 100 trending tracks of the week on Tiktok and finds the record with the highest velocity (most viral track)
 ### `bot2.py`
 **Schedule:** *Tuesday @ 17:00 UTC, Weekly*
 
-**Insights Description:** This bot collects data on the top 100 trending tracks of the week and finds the record with the highest velocity (most viral track)
+**Insights Description:** This bot collects data on the top 100 trending tracks of the week on Shazam and finds the record with the highest velocity (most viral track)
 ### `bot3.py`
 **Schedule:** *Wednesday (first) @ 12:00 UTC, Monthly*
 
