@@ -50,4 +50,9 @@ Follow me [@jacksonabull](https://twitter.com/jacksonabull) to see the latest
 
 **Insights Description:** This bot collects data on 4 weeks of tiktok's top tracks. For each unique artist, the program calculates the total wikipedia views, returning the artist with the most wikipedia views. 
 
+### `bot7.py`
+**Schedule:** *Wednesday(last) @ 13:00 UTC, Monthly*
+
+**Insights Description:** This bot collects data on 4 weeks of tiktok's top tracks and returns the record with the highest velocity + the artist's top 5 cities of Spotify monthly listeners.
+
 
