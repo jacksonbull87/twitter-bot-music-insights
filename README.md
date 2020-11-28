@@ -45,3 +45,9 @@ Follow me [@jacksonabull](https://twitter.com/jacksonabull) to see the latest
 
 **How It Works:** *Same process as Wednesday except within a scope of 1 week*
 
+### `bot6.py`
+**Schedule:** *Wednesday(second) @ 12:00 UTC, Monthly*
+
+**Insights Description:** This bot collects data on 4 weeks of tiktok's top tracks. For each unique artist, the program calculates the total wikipedia views, returning the artist with the most wikipedia views. 
+
+
