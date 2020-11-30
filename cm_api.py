@@ -1,4 +1,4 @@
-
+#This module contains api functions to retrieve raw data from Chartmetric's servers
 import requests
 import re
 import pandas as pd
