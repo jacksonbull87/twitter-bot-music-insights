@@ -46,8 +46,8 @@ def tweet(event, context):
 
     #get artist id for each artist
     id_bucket = []
-    for artist in df['artist']:
-        artist_id = get_artist_id(api_token, artist, 'artists')
+    for track_id in df['cm_id']:
+        artist_id = get_track_metadata(api_token, track_id)['artists'][0]['id']
         id_bucket.append(artist_id)
 
         
@@ -86,34 +86,67 @@ def tweet(event, context):
     #get spotify url
     spot_url = get_spotify_url(api_token, cm_artist_id)
 
+    #get twitter handle
+    handle = generate_twitter_handle(api_token, cm_artist_id)
+
     #get top cities for artist
     data_object = monthly_listen(api_token, cm_artist_id, str(add_date)[:10])
 
     #save top five cities as variables
     first, second, third, fourth, fifth = top_5_cities(data_object)
 
-    #create message
-    message = "Most Viral Tiktik Song of the Month: #{} by #{}\nVelocity = {} on {}\nTop 5 Cities by Spotify Monthly Listeners\n1. {}\n2. {}\n3. {}\n4. {}\n5. {}\n{}".format(hashtitle,hashartist,round(velocity, 2),str(add_date)[:10],first,second, third, fourth, fifth,spot_url)
-
     #instantiate twitter bot
     bot = instantiate_twitter_bot()
 
-    #update status with message
-    bot.update_status(message)
+    if handle:
+
+
+        #create message
+        message = "Most Viral Tiktik Song of the Month: #{} by {}\nVelocity = {} on {}\nTop 5 Cities by Spotify Monthly Listeners\n1. {}\n2. {}\n3. {}\n4. {}\n5. {}\n{}".format(hashtitle,handle,round(velocity, 2),str(add_date)[:10],first,second, third, fourth, fifth,spot_url)
 
 
 
-    body = {
-        "message": message,
-        "input": event
-    }
+        #update status with message
+        bot.update_status(message)
 
-    response = {
-        "statusCode": 200,
-        "body": json.dumps(body)
-    }
 
-    logger.info(message)
 
-    return responses
+        body = {
+            "message": message,
+            "input": event
+        }
+
+        response = {
+            "statusCode": 200,
+            "body": json.dumps(body)
+        }
+
+        logger.info(message)
+
+        return responses
+    else:
+        #create message
+        message = "Most Viral Tiktik Song of the Month: #{} by #{}\nVelocity = {} on {}\nTop 5 Cities by Spotify Monthly Listeners\n1. {}\n2. {}\n3. {}\n4. {}\n5. {}\n{}".format(hashtitle,hashartist,round(velocity, 2),str(add_date)[:10],first,second, third, fourth, fifth,spot_url)
+
+
+
+        #update status with message
+        bot.update_status(message)
+
+
+
+        body = {
+            "message": message,
+            "input": event
+        }
+
+        response = {
+            "statusCode": 200,
+            "body": json.dumps(body)
+        }
+
+        logger.info(message)
+
+        return responses
+
     

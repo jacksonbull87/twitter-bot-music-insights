@@ -4,6 +4,7 @@ import logging
 from cm_config import  config
 from cm_api import *
 from helper_funct import *
+from helper_funct1 import *
 from twitter_bot import *
 
 logger = logging.getLogger()
@@ -28,29 +29,55 @@ def tweet(event, context):
     #get chartmetric artist id
     artist_id = get_track_metadata(api_token, cm_id)['artists'][0]['id']
 
+    #get twitter handle
+    handle = generate_twitter_handle(api_token, artist_id)
+
     #get spotify url for artist
     spot_url = get_spotify_url(api_token, artist_id)
-
-    #create message
-    message = "'{}' by #{} has a velocity metric of {},\nmaking it the most viral song this week on #tiktok #dataanalytics Powered by @Chartmetric\n{}".format(title, hashartist, round(velocity, 2), spot_url)
 
     #instantiatiate twitter bot object
     bot = instantiate_twitter_bot()
 
-    bot.update_status(message)
 
-    body = {
-        "message": message,
-        "input": event
-    }
+    if handle:
+        # create message
+        message = "'{}' by {} has a velocity metric of {},\nmaking it the most viral song this week on #tiktok #dataanalytics Powered by @Chartmetric\n{}".format(title, handle, round(velocity, 2), spot_url)
 
-    response = {
-        "statusCode": 200,
-        "body": json.dumps(body)
-    }
 
-    logger.info(message)
+        bot.update_status(message)
 
-    return response
+        body = {
+            "message": message,
+            "input": event
+        }
+
+        response = {
+            "statusCode": 200,
+            "body": json.dumps(body)
+        }
+
+        logger.info(message)
+
+        return response
+    else:
+        # create message
+        message = "'{}' by #{} has a velocity metric of {},\nmaking it the most viral song this week on #tiktok #dataanalytics Powered by @Chartmetric\n{}".format(title, hashartist, round(velocity, 2), spot_url)
+
+
+        bot.update_status(message)
+
+        body = {
+            "message": message,
+            "input": event
+        }
+
+        response = {
+            "statusCode": 200,
+            "body": json.dumps(body)
+        }
+
+        logger.info(message)
+
+        return response
 
 

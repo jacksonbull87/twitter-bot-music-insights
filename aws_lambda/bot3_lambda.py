@@ -41,8 +41,8 @@ def tweet(event, context):
 
     #get artist id for each artist
     id_bucket = []
-    for artist in df['artist']:
-        artist_id = get_artist_id(api_token, artist, 'artists')
+    for track_id in df['cm_track']:
+        artist_id = get_track_metadata(api_token, track_id)['artists'][0]['id']
         id_bucket.append(artist_id)
 
         
@@ -81,26 +81,51 @@ def tweet(event, context):
     #get spotify url for artist
     spot_url = get_spotify_url(api_token, artist_id)
 
+    #get artist twitter handle
+    handle = generate_twitter_handle(api_token, artist_id)
+
     #create message
     message = "Out of all the artists having tracks on TikTok's Top 100 weekly chart,\n{} had the biggest monthly gain in Spotify listeners\nUp {}% since {}\n#{} #{} #DataAnalytics #MusicDiscovery\nPower by @Chartmetric\n{}".format(artist, round(listener_diff/before *100, 2), one_month_ago, hashtitle, hashartist,spot_url)
 
     #instantiatiate twitter bot object
     bot = instantiate_twitter_bot()
+    if handle:
+            message = "Out of all the artists having tracks on TikTok's Top 100 weekly chart,\n{} had the biggest monthly gain in Spotify listeners\nUp {}% since {}\n#{} #{} #DataAnalytics #MusicDiscovery\nPower by @Chartmetric\n{}".format(handle, round(listener_diff/before *100, 2), one_month_ago, hashtitle, hashartist,spot_url)
 
-    bot.update_status(message)
+
+            bot.update_status(message)
 
 
 
-    body = {
-        "message": message,
-        "input": event
-    }
+            body = {
+                "message": message,
+                "input": event
+            }
 
-    response = {
-        "statusCode": 200,
-        "body": json.dumps(body)
-    }
+            response = {
+                "statusCode": 200,
+                "body": json.dumps(body)
+            }
 
-    logger.info(message)
+            logger.info(message)
 
-    return response
+            return response
+    else:
+            message = "Out of all the artists having tracks on TikTok's Top 100 weekly chart,\n#{} had the biggest monthly gain in Spotify listeners\nUp {}% since {}\n#{} #{} #DataAnalytics #MusicDiscovery\nPower by @Chartmetric\n{}".format(artist, round(listener_diff/before *100, 2), one_month_ago, hashtitle, hashartist,spot_url)
+            bot.update_status(message)
+
+
+
+            body = {
+                "message": message,
+                "input": event
+            }
+
+            response = {
+                "statusCode": 200,
+                "body": json.dumps(body)
+            }
+
+            logger.info(message)
+
+            return response

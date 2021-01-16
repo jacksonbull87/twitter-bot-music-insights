@@ -65,23 +65,48 @@ def tweet(event, context):
     #get spotify url for artist
     spot_url = get_spotify_url(api_token, artist_id)
 
+    #get artist twitter handle
+    handle = generate_twitter_handle(api_token, artist_id)
+
     #instantiatiate twitter bot object
     bot = instantiate_twitter_bot()
-    message = "Out of all the artists trending on this week's top 100 Tiktok tracks,\n{} had the biggest gain in Spotify listeners\nUp {}% since last week\n#{} #{} #DataAnalytics #MusicDiscovery\nPower by @Chartmetric\n{}".format(artist, round(listener_diff/before *100, 2),hashtitle, hashartist,spot_url)
 
-    bot.update_status(message)
+    if handle:
+        
+        message = "Out of all the artists trending on this week's top 100 Tiktok tracks,\n{} had the biggest gain in Spotify listeners\nUp {}% since last week\n#{} #{} #DataAnalytics #MusicDiscovery\nPower by @Chartmetric\n{}".format(handle, round(listener_diff/before *100, 2),hashtitle, hashartist,spot_url)
+
+        bot.update_status(message)
 
 
-    body = {
-        "message": message,
-        "input": event
-    }
+        body = {
+            "message": message,
+            "input": event
+        }
 
-    response = {
-        "statusCode": 200,
-        "body": json.dumps(body)
-    }
+        response = {
+            "statusCode": 200,
+            "body": json.dumps(body)
+        }
 
-    logger.info(message)
+        logger.info(message)
 
-    return response
+        return response
+    else:
+        message = "Out of all the artists trending on this week's top 100 Tiktok tracks,\n{} had the biggest gain in Spotify listeners\nUp {}% since last week\n#{} #{} #DataAnalytics #MusicDiscovery\nPower by @Chartmetric\n{}".format(artist, round(listener_diff/before *100, 2),hashtitle, hashartist,spot_url)
+
+        bot.update_status(message)
+
+
+        body = {
+            "message": message,
+            "input": event
+        }
+
+        response = {
+            "statusCode": 200,
+            "body": json.dumps(body)
+        }
+
+        logger.info(message)
+
+        return response

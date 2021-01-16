@@ -38,8 +38,8 @@ def tweet(event, context):
 
     #get artist id for each artist
     id_bucket = []
-    for artist in df['artist']:
-        artist_id = get_artist_id(api_token, artist, 'artists')
+    for track_id in df['cm_track']:
+        artist_id = get_track_metadata(api_token, track_id)['artists'][0]['id']
         id_bucket.append(artist_id)
 
         
@@ -68,31 +68,65 @@ def tweet(event, context):
 
     #get title, artist, artist id, and wiki views for top artist
     title, artist, artist_id, wiki_views = get_topwiki_artist(reset)
+
+    wiki_views = insert_thousands_commas(wiki_views)
+    
     hashartist = artist.replace(" ", "",)
 
     #get spotify url for artist
     spot_url = get_spotify_url(api_token, artist_id)
 
-    #create message
-    message = "Out of all the artists having tracks on TikTok's Top 100 weekly chart,\n#{} had the most views on #wikipedia\nTotal Views: {:,d} since {}\n#DataAnalytics #MusicDiscovery\nPowered by @Chartmetric\n{}".format(hashartist, wiki_views, one_month_ago, spot_url)
+    #get artist twitter handle
+    handle = generate_twitter_handle(api_token, artist_id)
 
     #instantiatiate twitter bot object
     bot = instantiate_twitter_bot()
 
-    bot.update_status(message)
+    if handle:
+        #create message
+        message = "Out of all the artists having tracks on TikTok's Top 100 weekly chart,\n{} had the most views on #wikipedia\nTotal Views: {:,d} since {}\n#DataAnalytics #MusicDiscovery\nPowered by @Chartmetric\n{}".format(handle, wiki_views, one_month_ago, spot_url)
+
+        #instantiatiate twitter bot object
+        bot = instantiate_twitter_bot()
+
+        bot.update_status(message)
 
 
 
-    body = {
-        "message": message,
-        "input": event
-    }
+        body = {
+            "message": message,
+            "input": event
+        }
 
-    response = {
-        "statusCode": 200,
-        "body": json.dumps(body)
-    }
+        response = {
+            "statusCode": 200,
+            "body": json.dumps(body)
+        }
 
-    logger.info(message)
+        logger.info(message)
 
-    return response
+        return response
+    else:
+        #create message
+        message = "Out of all the artists having tracks on TikTok's Top 100 weekly chart,\n{} had the most views on #wikipedia\nTotal Views: {:,d} since {}\n#DataAnalytics #MusicDiscovery\nPowered by @Chartmetric\n{}".format(artist, wiki_views, one_month_ago, spot_url)
+
+        #instantiatiate twitter bot object
+        bot = instantiate_twitter_bot()
+
+        bot.update_status(message)
+
+
+
+        body = {
+            "message": message,
+            "input": event
+        }
+
+        response = {
+            "statusCode": 200,
+            "body": json.dumps(body)
+        }
+
+        logger.info(message)
+
+        return response
