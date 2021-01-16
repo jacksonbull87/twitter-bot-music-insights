@@ -1,6 +1,7 @@
+
 #This bot collects data on top 100 trending tracks on Tiktok
 #for the current week. Then it finds the artist with the 
-#biggest weekly gain in Spotify daily listeners.
+#largest total playlist reach on Spotify
 
 import tweepy
 from cm_config import  config
@@ -21,7 +22,8 @@ current_date = generate_today_date()
 
 before_date = generate_one_week_prior_date()
 
-data = get_tiktok_chart_data(api_token, 'tracks', current_date, 'weekly', limit=100)
+data = get_tiktok_chart_data(api_token, 'tracks', '2021-01-15', 'weekly', limit=100)
+
 #parse data into dataframe (columns='title', 'artist', 'isrc', 'velocity', 'cm_id')
 parsed_data = parse_tiktok_data(data)
 
@@ -40,32 +42,41 @@ parsed_data2 = parsed_data.dropna(subset=['cm_artist_id'])
 parsed_data2.reset_index(inplace=True)
 parsed_data2 = parsed_data2[~parsed_data2['cm_artist_id'].isin( ['None'])].reset_index()
 
-# # #collect before and after listener values for each artist
-listener_bucket = []
-for artist in parsed_data2['cm_artist_id']:
-    listeners = get_fan_metrics(api_token, artist, 'spotify', before_date, current_date, field='listeners')['listeners']
-    if len(listeners) > 0:
-        follow_tuple = (listeners[0]['value'], listeners[-1]['value'])
-        listener_bucket.append(follow_tuple)
-    else:
-        follow_tuple = (None, None)
-        listener_bucket.append(follow_tuple)
+reach_list = []
+for row in parsed_data2.iterrows():
+    track_tup = ()
+    track_id = row[1]['cm_id']
+    reach = get_playlist_reach(api_token, before_date,current_date, track_id, 'spotify', status='current')
+    track_tup = (track_id, reach)
+    reach_list.append(track_tup)
+    
+#create a dictionary from a list of tuples
+di = {}
+total_reach = Convert(reach_list, di)
+
+# create new feature for total playlist reach by map reach track id's
+parsed_data2['total playlist reach'] = parsed_data2['cm_id'].map(total_reach)
+
 
 complete_data = parsed_data2.join(pd.DataFrame(listener_bucket, columns=['before', 'after']))
 complete_data['listener_diff'] = complete_data['after'] - complete_data['before']
 
 complete_data.drop(axis=1, columns=['level_0', 'index'], inplace=True)
 
-title, artist, artist_id, before, listener_diff = get_most_listener_gain(complete_data)
-hashartist = artist.replace(" ", "",)
-hashtitle = title.replace(" ", "",)
+#sort dataset by total playlist reach
+complete_data = complete_data.sort_values('total playlist reach', ascending=False).reset_index(drop='index')
+
+#assign values of the top playlist reach to variables
+title = complete_data['title'][0].replace(" ", "",)
+artist = complete_data['artist'][0].replace(" ", "",)
+reach = insert_thousands_commas(complete_data['total playlist reach'][0])
+artist_id = complete_data['cm_artist_id'][0]
 
 #get spotify url for artist
 spot_url = get_spotify_url(api_token, artist_id)
 
 #instantiatiate twitter bot object
 bot = instantiate_twitter_bot()
-message = "Out of all the artists trending on this week's top 100 Tiktok tracks,\n{} had the biggest gain in Spotify listeners\nUp {}% since last week\n#{} #{} #DataAnalytics #MusicDiscovery\nPower by @Chartmetric\n{}".format(artist, round(listener_diff/before *100, 2),hashtitle, hashartist,spot_url)
+message = "Out of all the top trending tracks on TikTok this past week,\nthe song #{} by #{}\nhad the largest playlist reach on Spotify\nreaching {} potential followers\n#DataAnalytics #MusicDiscovery\nPower by @Chartmetric\n{}".format(title,artist,reach, spot_url)
 
 bot.update_status(message)
-
