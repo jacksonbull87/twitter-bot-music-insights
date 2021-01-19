@@ -18,7 +18,7 @@ def tweet(event, context):
     ################################################
 
     #generate today's date to make api call with
-    date = generate_today_date()
+    date = generate_yesterday_date()
 
     #collects data from today's top 100 tracks on tiktok for the week
     data = get_tiktok_chart_data(api_token, 'tracks', date, 'weekly')

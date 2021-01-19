@@ -20,7 +20,7 @@ def tweet(event, context):
     api_token = get_api_token(rt)
     ################################################
 
-    current_date = generate_today_date()
+    current_date = generate_yesterday_date()
 
     before_date = generate_one_week_prior_date()
 
@@ -30,8 +30,8 @@ def tweet(event, context):
 
     #get artist id for each artist
     id_bucket = []
-    for artist in parsed_data['artist']:
-        artist_id = get_artist_id(api_token, artist, 'artists')
+    for track_id in parsed_data['cm_id']:
+        artist_id = get_track_metadata(api_token, track_id)['artists'][0]['id']
         id_bucket.append(artist_id)
         time.sleep(1.5)
         

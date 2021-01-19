@@ -38,7 +38,7 @@ def tweet(event, context):
 
     #get artist id for each artist
     id_bucket = []
-    for track_id in df['cm_track']:
+    for track_id in df['cm_id']:
         artist_id = get_track_metadata(api_token, track_id)['artists'][0]['id']
         id_bucket.append(artist_id)
 

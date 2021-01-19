@@ -22,40 +22,69 @@ def tweet(event, context):
     #generate today's date to make api call with
     date = generate_today_date()
 
-    #collects data from today's top 100 tracks on tiktok for the week
-    data = get_tiktok_chart_data(api_token, 'tracks', date, 'weekly')
-
-    title, artist, velocity, cm_id = parse_viral(data)
+    #collects title, artist, velocity, and artist id for most viral shazam track
+    title, artist, velocity, artist_id = get_shazam_most_viral_track(api_token,date, country_code='US')
+    hashtitle = title.replace(" ", "",)
     hashartist = artist.replace(" ", "",)
 
-    #get chartmetric artist id
-    artist_id = get_track_metadata(api_token, cm_id)['artists'][0]['id']
+    handle = generate_twitter_handle(api_token, artist_id)
 
     #get spotify url for artist
     spot_url = get_spotify_url(api_token, artist_id)
 
-    message = "'{}' by #{} has a velocity metric of {},\nmaking it the most viral song this week on #tiktok #dataanalytics Powered by @Chartmetric\n{}".format(title, hashartist, round(velocity, 2), spot_url)
-
-
     #instantiatiate twitter bot object
     bot = instantiate_twitter_bot()
 
-    bot.update_status(message)
+    if handle:
+        message = "#{} by {} is catching alot of people's attention this past week on #shazam\nSo much so that its average change in rank over 7-days is {}\n#dataanalysis #velocity #viral Powered by @Chartmetric\n{}".format(hashtitle, handle, round(velocity, 2), spot_url)
+        bot.update_status(message)
+        body = {
+            "message": message,
+            "input": event
+        }
+
+        response = {
+            "statusCode": 200,
+            "body": json.dumps(body)
+        }
+
+        logger.info(message)
+
+        return response
+    else:
+        message = "#{} by #{} is catching alot of people's attention this past week on #shazam\nSo much so that its average change in rank over 7-days is {}\n#dataanalysis #velocity #viral Powered by @Chartmetric\n{}".format(hashtitle, hashartist, round(velocity, 2), spot_url)
+        bot.update_status(message)
+        body = {
+            "message": message,
+            "input": event
+        }
+
+        response = {
+            "statusCode": 200,
+            "body": json.dumps(body)
+        }
+
+        logger.info(message)
+
+        return response
+
+
+
 
 
     
    
 
-    body = {
-        "message": message,
-        "input": event
-    }
+        body = {
+            "message": message,
+            "input": event
+        }
 
-    response = {
-        "statusCode": 200,
-        "body": json.dumps(body)
-    }
+        response = {
+            "statusCode": 200,
+            "body": json.dumps(body)
+        }
 
-    logger.info(message)
+        logger.info(message)
 
-    return response
+        return response

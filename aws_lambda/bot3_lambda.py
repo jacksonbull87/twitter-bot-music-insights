@@ -20,7 +20,7 @@ def tweet(event, context):
     api_token = get_api_token(rt)
     ################################################
 
-    current_date = generate_today_date()
+    current_date = generate_yesterday_date()
     one_month_ago = generate_one_month_ago()
 
     date_list = get_date_range(one_month_ago, current_date, 'W')
@@ -41,7 +41,7 @@ def tweet(event, context):
 
     #get artist id for each artist
     id_bucket = []
-    for track_id in df['cm_track']:
+    for track_id in df['cm_id']:
         artist_id = get_track_metadata(api_token, track_id)['artists'][0]['id']
         id_bucket.append(artist_id)
 
@@ -50,14 +50,10 @@ def tweet(event, context):
     df['cm_artist_id'] = id_bucket
 
 
-    #drop rows with no ID
-    df2 = df.dropna(subset=['cm_artist_id'])
-    df2.reset_index(inplace=True)
-    df2 = df2[~df2['cm_artist_id'].isin( ['None'])].reset_index()
-
+    df.reset_index(inplace=True, drop='index')
     # # # #collect before and after listener values for each artist
     listener_bucket = []
-    for artist in df2['cm_artist_id']:
+    for artist in df['cm_artist_id']:
         listeners = get_fan_metrics(api_token, artist, 'spotify', one_month_ago, current_date, field='listeners')['listeners']
         if len(listeners) > 0:
             follow_tuple = (listeners[0]['value'], listeners[-1]['value'])
@@ -67,16 +63,13 @@ def tweet(event, context):
             follow_tuple = (None, None)
             listener_bucket.append(follow_tuple)
 
-    complete_data = df2.join(pd.DataFrame(listener_bucket, columns=['before', 'after']))
+    complete_data = df.join(pd.DataFrame(listener_bucket, columns=['before', 'after']))
     complete_data['listener_diff'] = complete_data['after'] - complete_data['before']
 
-    #drop unnecessary index columns
-    complete_data.drop(axis=1, columns=['level_0', 'index'], inplace=True)
-    #find track with biggest gain in spotify listeners and return title, artist, artist id, listeners one month ago, 
-    #and listener difference
     title, artist, artist_id, before, listener_diff = get_most_listener_gain(complete_data)
     hashartist = artist.replace(" ", "",)
     hashtitle = title.replace(" ", "",)
+    num_listener_diff = insert_thousands_commas(listener_diff)
 
     #get spotify url for artist
     spot_url = get_spotify_url(api_token, artist_id)
@@ -84,13 +77,11 @@ def tweet(event, context):
     #get artist twitter handle
     handle = generate_twitter_handle(api_token, artist_id)
 
-    #create message
-    message = "Out of all the artists having tracks on TikTok's Top 100 weekly chart,\n{} had the biggest monthly gain in Spotify listeners\nUp {}% since {}\n#{} #{} #DataAnalytics #MusicDiscovery\nPower by @Chartmetric\n{}".format(artist, round(listener_diff/before *100, 2), one_month_ago, hashtitle, hashartist,spot_url)
 
     #instantiatiate twitter bot object
     bot = instantiate_twitter_bot()
     if handle:
-            message = "Out of all the artists having tracks on TikTok's Top 100 weekly chart,\n{} had the biggest monthly gain in Spotify listeners\nUp {}% since {}\n#{} #{} #DataAnalytics #MusicDiscovery\nPower by @Chartmetric\n{}".format(handle, round(listener_diff/before *100, 2), one_month_ago, hashtitle, hashartist,spot_url)
+            message = "Out of all the artists having tracks on TikTok's Top 100 weekly chart,\n{} had the biggest monthly gain in Spotify listeners\nUp {}% ({} more listeners) since {}\n#{} #{} #DataAnalytics #MusicDiscovery\nPower by @Chartmetric\n{}".format(handle, round(listener_diff/before *100, 2),num_listener_diff, one_month_ago, hashtitle, hashartist,spot_url)
 
 
             bot.update_status(message)
@@ -111,7 +102,7 @@ def tweet(event, context):
 
             return response
     else:
-            message = "Out of all the artists having tracks on TikTok's Top 100 weekly chart,\n#{} had the biggest monthly gain in Spotify listeners\nUp {}% since {}\n#{} #{} #DataAnalytics #MusicDiscovery\nPower by @Chartmetric\n{}".format(artist, round(listener_diff/before *100, 2), one_month_ago, hashtitle, hashartist,spot_url)
+            message = "Out of all the artists having tracks on TikTok's Top 100 weekly chart,\n#{} had the biggest monthly gain in Spotify listeners\nUp {}% ({} more listeners) since {}\n#{} #{} #DataAnalytics #MusicDiscovery\nPower by @Chartmetric\n{}".format(hashartist, round(listener_diff/before *100, 2),num_listener_diff, one_month_ago, hashtitle, hashartist,spot_url)
             bot.update_status(message)
 
 
