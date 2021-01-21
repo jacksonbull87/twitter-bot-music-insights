@@ -36,33 +36,23 @@ def tweet(event, context):
     #drop tracks with no isrc code
     df.dropna(subset=['isrc'], inplace=True)
 
+
     #get artist id for each artist
     id_bucket = []
     for track_id in df['cm_id']:
         artist_id = get_track_metadata(api_token, track_id)['artists'][0]['id']
         id_bucket.append(artist_id)
 
-        
     # #create artist ID feature to dataframe
     df['cm_artist_id'] = id_bucket
-    #isolate artists with missing IDs
-    missing_ids = df[df['cm_artist_id'] == 'None']
-    
-    #drop rows with no ID
-    df2 = df.dropna(subset=['cm_artist_id'])
-    df2.reset_index(inplace=True)
-    df2 = df2[~df2['cm_artist_id'].isin( ['None'])].reset_index()
 
     #total wikipedia views for each artist and add to dataframe as new feature
     wiki_bucket = []
-    for artist in df2['cm_artist_id']:
+    for artist in df['cm_artist_id']:
         views = get_fan_metrics(api_token, artist, 'wikipedia', one_month_ago, current_date, field='views')['views']
         total_views = count_wiki_views(views)
         wiki_bucket.append(total_views)
-    complete_data = df2.join(pd.DataFrame(wiki_bucket, columns=['wiki views']))
-
-    #drop unnecessary index columns
-    complete_data.drop(axis=1, columns=['level_0', 'index'], inplace=True)
+    complete_data = df.join(pd.DataFrame(wiki_bucket, columns=['wiki views']))
     #sort dataframe by wiki views, desceninding order, reset index
     reset = complete_data.sort_values('wiki views', ascending=False).reset_index()
 
@@ -84,7 +74,7 @@ def tweet(event, context):
 
     if handle:
         #create message
-        message = "Out of all the artists having tracks on TikTok's Top 100 weekly chart,\n{} had the most views on #wikipedia\nTotal Views: {:,d} since {}\n#DataAnalytics #MusicDiscovery\nPowered by @Chartmetric\n{}".format(handle, wiki_views, one_month_ago, spot_url)
+        message = "Out of all the artists having tracks on TikTok's Top 100 weekly chart,\n{} had the most views on #wikipedia\nTotal Views: {} since {}\n#DataAnalytics #MusicDiscovery\nPowered by @Chartmetric\n{}".format(handle, wiki_views, one_month_ago, spot_url)
 
         #instantiatiate twitter bot object
         bot = instantiate_twitter_bot()
@@ -108,7 +98,7 @@ def tweet(event, context):
         return response
     else:
         #create message
-        message = "Out of all the artists having tracks on TikTok's Top 100 weekly chart,\n{} had the most views on #wikipedia\nTotal Views: {:,d} since {}\n#DataAnalytics #MusicDiscovery\nPowered by @Chartmetric\n{}".format(artist, wiki_views, one_month_ago, spot_url)
+        message = "Out of all the artists having tracks on TikTok's Top 100 weekly chart,\n{} had the most views on #wikipedia\nTotal Views: {} since {}\n#DataAnalytics #MusicDiscovery\nPowered by @Chartmetric\n{}".format(artist, wiki_views, one_month_ago, spot_url)
 
         #instantiatiate twitter bot object
         bot = instantiate_twitter_bot()
