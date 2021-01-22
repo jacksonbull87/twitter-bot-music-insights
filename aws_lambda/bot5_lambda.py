@@ -61,6 +61,7 @@ def tweet(event, context):
     title, artist, artist_id, before, listener_diff = get_most_listener_gain(complete_data)
     hashartist = artist.replace(" ", "",)
     hashtitle = title.replace(" ", "",)
+    number = insert_thousands_commas(listener_diff)
 
     #get spotify url for artist
     spot_url = get_spotify_url(api_token, artist_id)
@@ -73,7 +74,7 @@ def tweet(event, context):
 
     if handle:
         
-        message = "Out of all the artists trending on this week's top 100 Tiktok tracks,\n{} had the biggest gain in Spotify listeners\nUp {}% since last week\n#{} #{} #DataAnalytics #MusicDiscovery\nPower by @Chartmetric\n{}".format(handle, round(listener_diff/before *100, 2),hashtitle, hashartist,spot_url)
+        message = "Of this week's Top trending artists on Tiktok,\n{} had the biggest gain in Spotify listeners\nUp {}% since last week({} more listeners)\n#{} #{} #DataAnalytics #MusicDiscovery\nPower by @Chartmetric\n{}".format(handle, round(listener_diff/before *100, 2),number,hashtitle, hashartist,spot_url)
 
         bot.update_status(message)
 
@@ -92,7 +93,7 @@ def tweet(event, context):
 
         return response
     else:
-        message = "Out of all the artists trending on this week's top 100 Tiktok tracks,\n{} had the biggest gain in Spotify listeners\nUp {}% since last week\n#{} #{} #DataAnalytics #MusicDiscovery\nPower by @Chartmetric\n{}".format(artist, round(listener_diff/before *100, 2),hashtitle, hashartist,spot_url)
+        message = "Of this week's Top trending artists on Tiktok,\n{} had the biggest gain in Spotify listeners\nUp {}% since last week({} more listeners)\n#{} #{} #DataAnalytics #MusicDiscovery\nPower by @Chartmetric\n{}".format(artist, round(listener_diff/before *100, 2),number,hashtitle, hashartist,spot_url)
 
         bot.update_status(message)
 
