@@ -19,6 +19,8 @@ in terms of Spotify listener growth. The boxplot illustrated below shows her way
 ![](or_boxplot.jpeg)
 
 **Code Snippet**
+
+
 `fig = figure(figsize=(15,8))  # define the figure window
 ax1  = fig.add_subplot(111)   # define the axis
 sns.boxplot(complete_data['listener_diff'], fliersize=2,linewidth=1, whis=10,width=.75)
