@@ -18,27 +18,6 @@ Looking at the top trending tracks on Tiktok from January 15 - January 21, Olivi
 in terms of Spotify listener growth. The boxplot illustrated below shows her way outside of the 75th quartile
 ![](or_boxplot.jpeg)
 
-**Code Snippet**
-
-
-`fig = figure(figsize=(15,8))
-
-ax1  = fig.add_subplot(111)   
-
-sns.boxplot(complete_data['listener_diff'], fliersize=2,linewidth=1, whis=10,width=.75)
-sns.swarmplot(data=complete_data,x=complete_data['listener_diff'], color=".25")
-
-plt.title('Top Tiktok Artists - (Jan.15 - Jan.21)')
-
-plt.xlabel('Change in Spotify Listeners')
-
-plt.annotate('Olivia Rodrigo',xy=(10724863.0,0),xytext=(8211500.0,.2) ,arrowprops=dict(facecolor='red', arrowstyle='wedge'),
-                                                                                       fontsize=20)
-plt.annotate('(10,724,863 Listener Increase)',xy=(10723163.0,0),xytext=(8211500.0,.23),
-                                                                                       fontsize=10)
-plt.savefig('or_boxplot.jpeg')
-
-plt.show()`
 
 ## Bot Information
 ### `bot1.py`
