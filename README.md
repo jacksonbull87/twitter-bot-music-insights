@@ -13,6 +13,7 @@ Follow me [@jacksonabull](https://twitter.com/jacksonabull) to see the latest
 
 ## Interesting Insights
 *2020-01-22*
+
 Looking at the top trending tracks on Tiktok from January 15 - January 21, Olivia Rodrigo is a clear outlier
 in terms of Spotify listener growth. The boxplot illustrated below shows her way outside of the 75th percentile
 ![](or_boxplot.jpeg)
