@@ -12,6 +12,7 @@ Follow me [@jacksonabull](https://twitter.com/jacksonabull) to see the latest
 **Spotify Popularity**: The value will be between 0 and 100, with 100 being the most popular. The artist’s popularity is calculated from the popularity of all the artist’s tracks.
 
 ## Interesting Insights
+*2020-01-22*
 Looking at the top trending tracks on Tiktok from January 15 - January 21, Olivia Rodrigo is a clear outlier
 in terms of Spotify listener growth. The boxplot illustrated below shows her way outside of the 75th percentile
 ![](or_boxplot.jpeg)
