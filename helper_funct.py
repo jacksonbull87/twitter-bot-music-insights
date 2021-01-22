@@ -77,3 +77,21 @@ def isolate_first_tag(tag_string):
 
 def insert_thousands_commas(number):
     return '{:0,.0f}'.format(number)
+
+def get_summary_statistics(dataset):
+    import numpy as np
+    mean = int(np.round(np.mean(dataset), 0))
+    median = int(np.round(np.median(dataset), 2))
+    min_value = int(np.round(dataset.min(), 2))
+    max_value = int(np.round(dataset.max(), 2))
+    quartile_1 = int(np.round(dataset.quantile(0.25), 2))
+    quartile_3 = int(np.round(dataset.quantile(0.75), 2))
+    # Interquartile range
+    iqr = np.round(quartile_3 - quartile_1, 2)
+    print('Min: %s' % insert_thousands_commas(min_value))
+    print('Mean: %s' % insert_thousands_commas(mean))
+    print('Max: %s' % insert_thousands_commas(max_value))
+    print('25th percentile: %s' % insert_thousands_commas(quartile_1))
+    print('Median: %s' % insert_thousands_commas(median))
+    print('75th percentile: %s' % insert_thousands_commas(quartile_3))
+    print('Interquartile range (IQR): %s' % insert_thousands_commas(iqr))
