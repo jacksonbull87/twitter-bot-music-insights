@@ -18,13 +18,20 @@ Looking at the top trending tracks on Tiktok from January 15 - January 21, Olivi
 in terms of Spotify listener growth. The boxplot illustrated below shows her way outside of the third quartile and aboce the top 25%
 ![](or_boxplot.jpeg)
 
-This boxplots shown below compares the distribution Spotify listeners for each artist at the beginning and end of the week (january 15th-January 21st).
+The boxplots shown below compare the distribution of Spotify listeners for each artist at the beginning and end of the week (January 15th-January 21st).
 <p align="left">
 <img src="https://github.com/jacksonbull87/twitter-bot-music-insights/blob/main/tiktok_bp1.jpeg" />
 </p>
 <p align="right">
 <img src="https://github.com/jacksonbull87/twitter-bot-music-insights/blob/main/tiktok_bp2.jpeg" />
 </p>
+
+### Take-A-Ways
+- In terms of audience growth, artists who have Tiktok accounts perform better on average compared to artists who don't have Tiktok accounts
+
+
+
+
 
 
 ## Bot Information
