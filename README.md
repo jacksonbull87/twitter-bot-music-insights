@@ -20,10 +20,10 @@ in terms of Spotify listener growth. The boxplot illustrated below shows her way
 
 This boxplots shown below compares the distribution Spotify listeners for each artist at the beginning and end of the week (january 15th-January 21st).
 <p align="left">
-![](tiktok_bp1.jpeg)
+<img src="https://github.com/jacksonbull87/twitter-bot-music-insights/blob/main/tiktok_bp1.jpeg" />
 </p>
 <p align="right">
-![](tiktok_bp2.jpeg)
+<img src="https://github.com/jacksonbull87/twitter-bot-music-insights/blob/main/tiktok_bp2.jpeg" />
 </p>
 
 
