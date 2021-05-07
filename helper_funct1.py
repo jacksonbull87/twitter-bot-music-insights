@@ -47,6 +47,7 @@ def parse_tiktok_data(data):
     df.dropna(subset=['isrc'], inplace=True)
     return df
 
+#parse data into dataframe (columns=['rank', 'added_at', 'title', 'artist', 'isrc', 'velocity', 'cm_id', 'time_on_chart', 'release_dates'])
 def parse_viral(data):
     data_bucket = []
     for track in data:

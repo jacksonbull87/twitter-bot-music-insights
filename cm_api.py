@@ -1,4 +1,4 @@
-#This module contains api functions to retrieve raw data from Chartmetric's servers
+
 import requests
 import re
 import pandas as pd
@@ -59,9 +59,23 @@ def get_track_metadata(api_token, cm_track_id):
 
         data = response.json()
         track = data['obj']
+        return track
     else:
         pass
-    return track
+
+def get_artist_metadata(api_token, cm_artist_id):
+
+    response = requests.get(url='https://api.chartmetric.com/api/artist/{}'.format(cm_artist_id),
+                            headers={'Authorization' : 'Bearer {}'.format(api_token)}
+                                )
+    if response.status_code == 200:
+
+        data = response.json()
+        artist = data['obj']
+        return artist
+    else:
+        pass
+    
 
 def get_chart_data(api_token, cm_track_id, chart_type, date):
     #refer to https://api.chartmetric.com/apidoc/#api-Track-getTrackCharts for allowed values for chart_type
@@ -74,6 +88,17 @@ def get_chart_data(api_token, cm_track_id, chart_type, date):
         data = response.json()
         chart = data['obj']
         return chart['data']
+
+#returns top 200 chart from soundcloud given specific parameters
+def get_soundclound_chart(api_token, country_code, date, kind, genre,raw=True, latest=True):
+   
+    response = requests.get(url='https://api.chartmetric.com/api/charts/soundcloud',
+                            headers={'Authorization' : 'Bearer {}'.format(api_token)}, 
+                            params={'country_code': country_code, 'date':date,
+                                   'kind':kind, 'genre':genre, 'raw':raw, 'latest':latest})
+    if response.status_code == 200:
+        data = response.json()
+        return data['obj']['data']
 
 def get_tiktok_chart_data(api_token, chart_type, date, interval, limit=100):
     #for apitoken import get_import_token
@@ -88,6 +113,10 @@ def get_tiktok_chart_data(api_token, chart_type, date, interval, limit=100):
         data = response.json()
         chart = data['obj']
         return chart['data']
+    else:
+        print(response.status_code)
+        print(response.text)
+
 
 
 def get_track_chart(api_token, cm_id, chart_type, since):
@@ -104,7 +133,16 @@ def get_track_chart(api_token, cm_id, chart_type, since):
         print(response.text)
 
 def get_spotify_charts(api_token, date, country_code, chart_type, interval):
-    response = requests.get(url='https://api.chartmetric.com/api/charts/spotify',
+    retry_strategy = Retry(
+    total=3,
+    backoff_factor=1,
+    status_forcelist=[ 500, 502, 503, 504],
+    method_whitelist=["HEAD", "GET", "OPTIONS"],)
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    http = requests.Session()
+    http.mount("https://", adapter)
+    http.mount("http://", adapter)
+    response = http.get(url='https://api.chartmetric.com/api/charts/spotify',
                             headers={'Authorization' : 'Bearer {}'.format(api_token)}, 
         params={'date':date, 'country_code':country_code, 'type':chart_type, 'interval':interval}
                                 )
@@ -177,7 +215,16 @@ def get_track_playlist(api_token, cm_id, platform, status, since, limit):
 
 def get_artist_id(api_token, q, search_type):
     #return tuple (artist name, artist cm id)
-    response = requests.get(url='https://api.chartmetric.com/api/search',
+    retry_strategy = Retry(
+    total=3,
+    backoff_factor=1,
+    status_forcelist=[ 500, 502, 503, 504],
+    method_whitelist=["HEAD", "GET", "OPTIONS"],)
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    http = requests.Session()
+    http.mount("https://", adapter)
+    http.mount("http://", adapter)
+    response = http.get(url='https://api.chartmetric.com/api/search',
                             headers={'Authorization' : 'Bearer {}'.format(api_token)}, params={'q': q, 'type': search_type,
                             'limit':50}
                                 )
@@ -189,9 +236,9 @@ def get_artist_id(api_token, q, search_type):
                 if re.fullmatch(q.lower(), artist['name'].lower()):
                     # print(artist['name'])
                     # print('Chartmetric ID: ',artist['id'])
-                    return artist['id']
+                    return artist['name'].lower(), artist['id']
                 else:
-                    continue
+                    return None
             
         except TypeError:
             return "None"
@@ -270,3 +317,60 @@ def get_shazam_most_viral_track(api_token,date, country_code='US'):
         df1 = df.reset_index()
         return df1['title'][0], df1['artist'][0][0], df1['velocity'][0], df1['artist id'][0][0]
 
+#this function returns the current playlist count for given track within the date range
+def get_playlist_count(api_token, since_date,until_date, track_id, platform, status='current'):
+    retry_strategy = Retry(
+    total=3,
+    backoff_factor=1,
+    status_forcelist=[ 500, 502, 503, 504],
+    method_whitelist=["HEAD", "GET", "OPTIONS"],)
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    http = requests.Session()
+    http.mount("https://", adapter)
+    http.mount("http://", adapter)
+    response = http.get(url='https://api.chartmetric.com/api/track/{}/{}/{}/playlists'.format(track_id,platform, status),
+                            headers={'Authorization' : 'Bearer {}'.format(api_token)}, 
+        params={'since':since_date, 'until':until_date, 'limit':100,'sortColumn':'followers'}
+                                )
+    if response.status_code == 200:
+        data = response.json()
+        chart = data['obj']
+        return len(chart)
+    else:
+        
+        print(response.status_code)
+        print(response.text)
+
+#this function returns the current playlist reach for given track within the date range
+def get_playlist_reach(api_token, since_date,until_date, track_id, platform, status='current'):
+    retry_strategy = Retry(
+    total=3,
+    backoff_factor=1,
+    status_forcelist=[ 500, 502, 503, 504],
+    method_whitelist=["HEAD", "GET", "OPTIONS"],)
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    http = requests.Session()
+    http.mount("https://", adapter)
+    http.mount("http://", adapter)
+    response = http.get(url='https://api.chartmetric.com/api/track/{}/{}/{}/playlists'.format(track_id,platform, status),
+                            headers={'Authorization' : 'Bearer {}'.format(api_token)}, 
+        params={'since':since_date, 'until':until_date, 'limit':100,'sortColumn':'followers'}
+                                )
+    if response.status_code == 200:
+        data = response.json()
+        playlists = data['obj']
+        
+        tup_bucket = []
+        follower_bucket = []
+        for playlist in playlists:
+            if playlist['playlist']['followers'] == None:
+                follower_bucket.append(0)
+            else:
+                follower_bucket.append(playlist['playlist']['followers'])
+        reach = sum(follower_bucket)
+        return reach  
+        
+    else:
+        
+        print(response.status_code)
+        print(response.text)
